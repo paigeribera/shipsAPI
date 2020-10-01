@@ -47,7 +47,59 @@ function delete_ship(id) {
 }
 
 /* ------------- End Model Functions ------------- */
-
+/* ------------- Begin Slip Model Functions ------------- */
+// all new slips are empty starting off
+function post_slip(number, current_boat, arrival_date) {
+    var key = datastore.key(SLIP);
+    const new_slip = {
+      number: number,
+      current_boat: null,
+      arrival_date: arrival_date
+    };
+    return datastore.save({ key: key, data: new_slip }).then(() => {
+      return key;
+    });
+  }
+  
+  // do i need to get entities[1]
+  function get_slips() {
+    const q = datastore.createQuery(SLIP);
+    return datastore.runQuery(q).then(entities => {
+      return entities[0].map(fromDatastore);
+    });
+  }
+  
+  function get_slip(id) {
+    const q = datastore.createQuery(SLIP);
+    return datastore.key([SLIP, parseInt(id, 10)]);
+  }
+  
+  function put_slip(id, number, current_boat, arrival_date) {
+    const key = datastore.key([SLIP, parseInt(id, 10)]);
+    console.error(
+      "id num current boat arrival",
+      id,
+      num,
+      current_boat,
+      arrival_date
+    );
+    console.error(key);
+    const slip = {
+      number: number,
+      current_boat: current_boat,
+      arrival_date: arrival_date
+    };
+    console.error(slip);
+    return datastore.save({ key: key, data: slip });
+  }
+  
+  function delete_slip(id) {
+    const key = datastore.key([SLIP, parseInt(id, 10)]);
+    return datastore.delete(key);
+  }
+  
+  /* ------------- End Model Functions ------------- */
+  
 
 /* ------------- Begin Controller Functions For Ships ------------- */
 
